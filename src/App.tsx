@@ -1,15 +1,13 @@
-import React from 'react';
+import React from "react";
 //import { Table } from 'react-bootstrap'
-import './App.css';
+import "./App.css";
 
 class ProductCategoryRow extends React.Component<any, any> {
   render() {
     const category = this.props.category;
     return (
       <tr>
-        <td colSpan={2}>
-          { category }
-        </td>
+        <td colSpan={2}>{category}</td>
       </tr>
     );
   }
@@ -18,11 +16,11 @@ class ProductCategoryRow extends React.Component<any, any> {
 class ProductRow extends React.Component<any, any> {
   render() {
     const product = this.props.product;
-    const name = product.stocked ?
-      product.name :
-      <span style={{color: 'red'}}>
-        {product.name}
-      </span>;
+    const name = product.stocked ? (
+      product.name
+    ) : (
+      <span style={{ color: "red" }}>{product.name}</span>
+    );
     return (
       <tr>
         <td>{name}</td>
@@ -35,36 +33,34 @@ class ProductRow extends React.Component<any, any> {
 class ProductTable extends React.Component<any, any> {
   render() {
     const rows: any[] = [];
-    let lastCategory: string = '';
+    let lastCategory: string = "";
 
     const filterText = this.props.filterText;
     const inStockOnly = this.props.inStockOnly;
 
-    this.props.products.forEach((product: { name: string ; stocked: boolean; category: string; }) => {
-      
+    this.props.products.forEach(
+      (product: { name: string; stocked: boolean; category: string }) => {
         const indexOfFirst = product.name.indexOf(filterText);
-        if ( indexOfFirst === -1) {
+        if (indexOfFirst === -1) {
           return;
         }
         if (inStockOnly && !product.stocked) {
-            return;
+          return;
         }
 
         if (product.category !== lastCategory) {
           rows.push(
             <ProductCategoryRow
               category={product.category}
-              key={product.category} />
+              key={product.category}
+            />
           );
         }
-      
-        rows.push(
-          <ProductRow
-            product={product}
-            key={product.name} />
-        );
+
+        rows.push(<ProductRow product={product} key={product.name} />);
         lastCategory = product.category;
-    });
+      }
+    );
 
     return (
       <table>
@@ -81,18 +77,17 @@ class ProductTable extends React.Component<any, any> {
 }
 
 class SearchBar extends React.Component<any, any> {
-  
   constructor(props: any) {
     super(props);
     this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
     this.handleInStockChange = this.handleInStockChange.bind(this);
   }
 
-  handleFilterTextChange(e: { target: { value: any; }; }) {
+  handleFilterTextChange(e: { target: { value: any } }) {
     this.props.onFilterTextChange(e.target.value);
   }
-  
-  handleInStockChange(e: { target: { checked: any; }; }) {
+
+  handleInStockChange(e: { target: { checked: any } }) {
     this.props.onInStockChange(e.target.checked);
   }
 
@@ -101,11 +96,18 @@ class SearchBar extends React.Component<any, any> {
     const inStockOnly = this.props.inStockOnly;
     return (
       <form>
-        <input type="text" placeholder="Chercher..." value={filterText} onChange={this.handleFilterTextChange}
+        <input
+          type="text"
+          placeholder="Chercher..."
+          value={filterText}
+          onChange={this.handleFilterTextChange}
         />
         <p>
-          <input type="checkbox" checked={inStockOnly} onChange={this.handleInStockChange}/>
-          {' '}
+          <input
+            type="checkbox"
+            checked={inStockOnly}
+            onChange={this.handleInStockChange}
+          />{" "}
           Afficher uniquement les produits en stock
         </p>
       </form>
@@ -117,38 +119,37 @@ class FilterableProductTable extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      filterText: '',
-      inStockOnly: false
+      filterText: "",
+      inStockOnly: false,
     };
 
     this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
     this.handleInStockChange = this.handleInStockChange.bind(this);
-
   }
-  
+
   handleFilterTextChange(filterText: any) {
     this.setState({
-      filterText: filterText
+      filterText: filterText,
     });
   }
-  
+
   handleInStockChange(inStockOnly: any) {
     this.setState({
-      inStockOnly: inStockOnly
-    })
+      inStockOnly: inStockOnly,
+    });
   }
-  
+
   render() {
     return (
       <div>
-        <SearchBar 
+        <SearchBar
           filterText={this.state.filterText}
           inStockOnly={this.state.inStockOnly}
           onFilterTextChange={this.handleFilterTextChange}
           onInStockChange={this.handleInStockChange}
         />
-        <ProductTable 
-          products={this.props.products} 
+        <ProductTable
+          products={this.props.products}
           filterText={this.state.filterText}
           inStockOnly={this.state.inStockOnly}
         />
@@ -158,12 +159,37 @@ class FilterableProductTable extends React.Component<any, any> {
 }
 
 const PRODUCTS = [
-  {category: 'Sporting Goods', price: '$50.99', stocked: true, name: 'Football'},
-  {category: 'Sporting Goods', price: '$9.99', stocked: true, name: 'Baseball'},
-  {category: 'Sporting Goods', price: '$29.99', stocked: false, name: 'Basketball'},
-  {category: 'Electronics', price: '$99.99', stocked: true, name: 'iPod Touch'},
-  {category: 'Electronics', price: '$399.99', stocked: false, name: 'iPhone 12'},
-  {category: 'Electronics', price: '$199.99', stocked: true, name: 'Nexus 8'}
+  {
+    category: "Sporting Goods",
+    price: "$50.99",
+    stocked: true,
+    name: "Football",
+  },
+  {
+    category: "Sporting Goods",
+    price: "$9.99",
+    stocked: true,
+    name: "Baseball",
+  },
+  {
+    category: "Sporting Goods",
+    price: "$29.99",
+    stocked: false,
+    name: "Basketball",
+  },
+  {
+    category: "Electronics",
+    price: "$99.99",
+    stocked: true,
+    name: "iPod Touch",
+  },
+  {
+    category: "Electronics",
+    price: "$399.99",
+    stocked: false,
+    name: "iPhone 12",
+  },
+  { category: "Electronics", price: "$199.99", stocked: true, name: "Nexus 8" },
 ];
 
 function App() {
@@ -177,4 +203,3 @@ function App() {
 }
 
 export default App;
-
